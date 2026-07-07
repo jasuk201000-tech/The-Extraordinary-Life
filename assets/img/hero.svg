@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 660" role="img" aria-label="Young people sitting together in a warm circle at sunrise">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#F7D9B8"/>
+      <stop offset="0.55" stop-color="#F4C8A8"/>
+      <stop offset="1" stop-color="#E7C3C0"/>
+    </linearGradient>
+    <radialGradient id="sun" cx="0.72" cy="0.28" r="0.5">
+      <stop offset="0" stop-color="#FBE7CF"/>
+      <stop offset="1" stop-color="#F4C8A8" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="floor" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#E7D2B6"/>
+      <stop offset="1" stop-color="#D8B894"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="600" height="660" fill="url(#sky)"/>
+  <rect width="600" height="660" fill="url(#sun)"/>
+  <circle cx="430" cy="180" r="78" fill="#FBEAD2" opacity="0.85"/>
+
+  <!-- hills -->
+  <path d="M0 430 Q160 360 320 420 T600 400 V660 H0 Z" fill="#E3BF96" opacity="0.6"/>
+  <path d="M0 470 Q200 410 380 460 T600 450 V660 H0 Z" fill="url(#floor)"/>
+
+  <!-- soft plant -->
+  <g fill="#7E9477" opacity="0.85">
+    <path d="M70 470 q-18 -50 4 -96 q14 30 -4 96 Z"/>
+    <path d="M70 470 q24 -40 56 -52 q-20 34 -56 52 Z"/>
+  </g>
+
+  <!-- circle of people (simple warm silhouettes) -->
+  <g>
+    <!-- back row -->
+    <g fill="#C97A5C"><circle cx="200" cy="330" r="26"/><rect x="172" y="352" width="56" height="80" rx="28"/></g>
+    <g fill="#A86A8E"><circle cx="300" cy="316" r="27"/><rect x="270" y="340" width="60" height="84" rx="30"/></g>
+    <g fill="#6E8A6C"><circle cx="400" cy="330" r="26"/><rect x="372" y="352" width="56" height="80" rx="28"/></g>
+    <!-- front row -->
+    <g fill="#D98E6A"><circle cx="150" cy="430" r="30"/><rect x="116" y="456" width="68" height="96" rx="34"/></g>
+    <g fill="#B9A4C9"><circle cx="258" cy="452" r="32"/><rect x="222" y="480" width="72" height="100" rx="36"/></g>
+    <g fill="#5C7E74"><circle cx="370" cy="452" r="32"/><rect x="334" y="480" width="72" height="100" rx="36"/></g>
+    <g fill="#E0986F"><circle cx="468" cy="430" r="30"/><rect x="434" y="456" width="68" height="96" rx="34"/></g>
+  </g>
+</svg>

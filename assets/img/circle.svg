@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 480" role="img" aria-label="A circle of chairs in a warm, plant-filled room">
+  <defs>
+    <linearGradient id="wall" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#F2E6D2"/>
+      <stop offset="1" stop-color="#E8D7BD"/>
+    </linearGradient>
+  </defs>
+  <rect width="600" height="480" fill="url(#wall)"/>
+  <!-- window light -->
+  <rect x="40" y="40" width="150" height="200" rx="12" fill="#FBEAD2" opacity="0.7"/>
+  <line x1="115" y1="40" x2="115" y2="240" stroke="#E8D7BD" stroke-width="4"/>
+  <line x1="40" y1="140" x2="190" y2="140" stroke="#E8D7BD" stroke-width="4"/>
+  <!-- rug -->
+  <ellipse cx="300" cy="360" rx="230" ry="90" fill="#D98E6A" opacity="0.45"/>
+  <ellipse cx="300" cy="360" rx="150" ry="58" fill="#E07A5F" opacity="0.35"/>
+  <!-- chairs in a ring -->
+  <g fill="#7E9477">
+    <rect x="120" y="300" width="44" height="44" rx="10"/><rect x="120" y="280" width="44" height="24" rx="8"/>
+    <rect x="436" y="300" width="44" height="44" rx="10"/><rect x="436" y="280" width="44" height="24" rx="8"/>
+  </g>
+  <g fill="#C97A5C">
+    <rect x="230" y="270" width="44" height="40" rx="10"/><rect x="230" y="252" width="44" height="22" rx="8"/>
+    <rect x="330" y="270" width="44" height="40" rx="10"/><rect x="330" y="252" width="44" height="22" rx="8"/>
+  </g>
+  <g fill="#B9A4C9">
+    <rect x="180" y="380" width="48" height="44" rx="10"/>
+    <rect x="376" y="380" width="48" height="44" rx="10"/>
+    <rect x="278" y="398" width="48" height="44" rx="10"/>
+  </g>
+  <!-- plants -->
+  <g fill="#5C7E74">
+    <path d="M520 320 q-22 -70 6 -130 q18 50 -6 130 Z"/>
+    <path d="M520 320 q30 -54 74 -70 q-26 46 -74 70 Z"/>
+    <path d="M520 320 q-40 -40 -52 -86 q44 22 52 86 Z"/>
+  </g>
+  <rect x="500" y="318" width="40" height="44" rx="8" fill="#C97A5C"/>
+</svg>

@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-label="Portrait of a facilitator">
+  <defs><linearGradient id="p2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E7DEEF"/><stop offset="1" stop-color="#C7B4D6"/></linearGradient></defs>
+  <rect width="400" height="400" fill="url(#p2)"/>
+  <circle cx="200" cy="150" r="64" fill="#C75D45"/>
+  <path d="M200 230c-78 0-118 48-128 110h256c-10-62-50-110-128-110z" fill="#C75D45"/>
+  <circle cx="200" cy="152" r="46" fill="#E0A079"/>
+  <path d="M150 130c0-30 24-52 50-52s50 22 50 52c-18-10-32-12-50-12s-32 2-50 12z" fill="#4A2E2A"/>
+</svg>
