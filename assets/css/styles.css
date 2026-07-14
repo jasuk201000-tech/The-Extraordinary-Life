@@ -184,6 +184,35 @@ section { position: relative; }
 .nav-toggle.open span:nth-child(2) { opacity: 0; }
 .nav-toggle.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
+/* ---------- Nav dropdown (About Us) ---------- */
+.nav-drop { position: relative; display: inline-flex; }
+.nav-drop-toggle { display: inline-flex; align-items: center; gap: 0.35em; font-family: var(--sans); font-size: 0.95rem; font-weight: 500; color: var(--ink-soft); transition: color 0.2s; }
+.nav-drop-toggle:hover { color: var(--ink); }
+.nav-drop-toggle .caret { width: 15px; height: 15px; transition: transform 0.25s var(--ease); }
+.nav-drop:hover .nav-drop-toggle .caret,
+.nav-drop.open .nav-drop-toggle .caret,
+.nav-drop:focus-within .nav-drop-toggle .caret { transform: rotate(180deg); }
+.nav-drop-menu {
+  position: absolute; top: calc(100% + 8px); left: 50%;
+  transform: translateX(-50%) translateY(-6px);
+  min-width: 210px; background: var(--paper); border: 1px solid var(--line);
+  border-radius: var(--r-md); box-shadow: var(--shadow-md); padding: 0.45rem;
+  display: flex; flex-direction: column; gap: 0.1rem;
+  opacity: 0; visibility: hidden; z-index: 60;
+  transition: opacity 0.2s var(--ease), transform 0.2s var(--ease), visibility 0.2s;
+}
+.nav-drop-menu::before { content: ""; position: absolute; top: -10px; left: 0; right: 0; height: 10px; } /* hover bridge */
+.nav-drop:hover .nav-drop-menu,
+.nav-drop.open .nav-drop-menu,
+.nav-drop:focus-within .nav-drop-menu { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+.nav-drop-menu a { display: block; padding: 0.62em 0.9em; border-radius: var(--r-sm); font-size: 0.93rem; font-weight: 500; color: var(--ink-soft); white-space: nowrap; transition: background 0.18s, color 0.18s; }
+.nav-drop-menu a::after { content: none; } /* cancel the underline used on top-level links */
+.nav-drop-menu a:hover { background: #F5EFE1; color: var(--ink); }
+
+/* Mobile menu: About Us grouping */
+.mobile-menu .mm-label { display: block; font-family: var(--sans); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-faint); padding: 1.1rem 0 0.2rem; }
+.mobile-menu .mm-sub { font-size: 1.35rem; padding-left: 1rem; }
+
 /* ---------- Hero (minimal, type-led) ---------- */
 .hero { position: relative; padding-top: clamp(36px, 6vw, 72px); padding-bottom: clamp(56px, 8vw, 104px); overflow: hidden; }
 .hero-gradient {
