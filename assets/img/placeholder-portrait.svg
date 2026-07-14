@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-label="Photo placeholder">
+  <rect width="400" height="400" fill="#EEF2F0"/>
+  <circle cx="200" cy="165" r="58" fill="none" stroke="#B7C4BF" stroke-width="3"/>
+  <path d="M110 330c0-52 40-92 90-92s90 40 90 92" fill="none" stroke="#B7C4BF" stroke-width="3"/>
+  <g fill="#9AA9A3" font-family="Inter, sans-serif" text-anchor="middle">
+    <text x="200" y="372" font-size="17" font-weight="600" letter-spacing="0.08em">ADD PHOTO</text>
+  </g>
+</svg>

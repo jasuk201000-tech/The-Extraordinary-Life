@@ -2,6 +2,30 @@
 (function () {
   'use strict';
 
+  /* Progressive enhancement flag — enables collapsible structure via CSS */
+  document.documentElement.classList.add('js');
+
+  /* Interactive structure: click a staircase stage / session step to reveal it */
+  var expandables = document.querySelectorAll('.stair, .journey-step');
+  expandables.forEach(function (item) {
+    item.setAttribute('role', 'button');
+    item.setAttribute('tabindex', '0');
+    item.setAttribute('aria-expanded', 'false');
+    var toggle = function () {
+      var open = item.classList.toggle('open');
+      item.setAttribute('aria-expanded', String(open));
+    };
+    item.addEventListener('click', toggle);
+    item.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') { e.preventDefault(); toggle(); }
+    });
+  });
+  /* Open the first item of each group so the pattern is discoverable */
+  document.querySelectorAll('.stairs, .journey-track').forEach(function (group) {
+    var first = group.querySelector('.stair, .journey-step');
+    if (first) { first.classList.add('open'); first.setAttribute('aria-expanded', 'true'); }
+  });
+
   /* Sticky header state */
   const header = document.querySelector('.site-header');
   const onScroll = () => {

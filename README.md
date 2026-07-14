@@ -21,11 +21,16 @@ python -m http.server 8000   # then visit http://localhost:8000
 
 | File | Purpose |
 | --- | --- |
-| `index.html` | Home — trust, the experience, emotional connection, stories, FAQ |
-| `the-experience.html` | Hour-by-hour walkthrough of the weekend + what we'll never do |
-| `about.html` | Philosophy, principles, facilitators, and a promise to parents |
-| `stories.html` | Testimonials and quiet outcomes |
+| `index.html` | Home — trust, the interactive Four-Stage Staircase, session arc, stories, FAQ teaser |
+| `the-experience.html` | Step-by-step walkthrough of the sessions + what we'll never do |
+| `the-programme.html` | Philosophy, the interactive framework, principles, and a promise to parents (`#parents`) |
+| `the-team.html` | The people/organisation — placeholder photos, names, roles and bios to fill in |
+| `stories.html` | Testimonials and Before/After outcomes |
+| `faq.html` | Full FAQ accordion (its own page) |
 | `apply.html` | Dates, a gentle no-pressure application form, and contact |
+
+The sessions are **free**. The Four-Stage Staircase and the session arc are
+**click-to-expand** (progressive enhancement — full text shows if JS is off).
 
 ## Structure
 

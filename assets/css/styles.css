@@ -501,10 +501,38 @@ section { position: relative; }
 .band--ink .quote-band blockquote .mk, .band--teal .quote-band blockquote .mk, .band--sage .quote-band blockquote .mk { color: var(--peach); }
 .quote-band cite { display: block; margin-top: 1.3rem; font-style: normal; font-family: var(--sans); font-weight: 600; font-size: 0.86rem; letter-spacing: 0.02em; opacity: 0.75; }
 
+/* =========================================================
+   INTERACTIVE STRUCTURE — click a stage / step to reveal it
+   (progressive enhancement: only collapses when JS is on)
+   ========================================================= */
+html.js .stair, html.js .journey-step { cursor: pointer; padding-right: 3.4rem; }
+html.js .stair::after, html.js .journey-step::after {
+  content: ""; position: absolute; top: 2rem; right: 1.8rem;
+  width: 10px; height: 10px; border-right: 2px solid var(--ink-faint);
+  border-bottom: 2px solid var(--ink-faint); transform: rotate(45deg);
+  transition: transform 0.3s var(--ease); pointer-events: none;
+}
+html.js .stair.open::after, html.js .journey-step.open::after { transform: rotate(-135deg); }
+html.js .stair:focus-visible, html.js .journey-step:focus-visible { outline: 3px solid var(--coral); outline-offset: 3px; }
+
+/* collapse the descriptions until opened */
+html.js .stair .step-body p,
+html.js .journey-step p:not(.when) {
+  max-height: 0; overflow: hidden; opacity: 0; margin-top: 0;
+  transition: max-height 0.4s var(--ease), opacity 0.35s var(--ease), margin-top 0.4s var(--ease);
+}
+html.js .stair.open .step-body p,
+html.js .journey-step.open p:not(.when) { max-height: 340px; opacity: 1; margin-top: 0.6rem; }
+html.js .journey-step.open p:not(.when) { margin-top: 0.4rem; }
+/* the journey uses translateX-on-hover; disable so the chevron reads as a toggle */
+html.js .stair:hover { transform: none; }
+
 /* ---------- Responsive: new components ---------- */
 @media (max-width: 760px) {
   .stairs.climb .stair { margin-left: 0 !important; }
   .stair { grid-template-columns: 52px 1fr; padding: 1.4rem 1.4rem; }
+  html.js .stair, html.js .journey-step { padding-right: 3rem; }
+  html.js .stair::after, html.js .journey-step::after { top: 1.6rem; right: 1.4rem; }
   .stair .step-num { width: 52px; height: 52px; font-size: 1.3rem; }
   .ba-grid { grid-template-columns: 1fr; }
 }
