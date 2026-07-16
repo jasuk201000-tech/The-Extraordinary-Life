@@ -26,25 +26,6 @@
     if (first) { first.classList.add('open'); first.setAttribute('aria-expanded', 'true'); }
   });
 
-  /* Nav dropdown (About Us): hover works via CSS; this adds click + keyboard */
-  document.querySelectorAll('.nav-drop').forEach(function (drop) {
-    var btn = drop.querySelector('.nav-drop-toggle');
-    if (!btn) return;
-    btn.addEventListener('click', function (e) {
-      e.stopPropagation();
-      var open = drop.classList.toggle('open');
-      btn.setAttribute('aria-expanded', String(open));
-    });
-    drop.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape') { drop.classList.remove('open'); btn.setAttribute('aria-expanded', 'false'); btn.focus(); }
-    });
-  });
-  document.addEventListener('click', function (e) {
-    document.querySelectorAll('.nav-drop.open').forEach(function (d) {
-      if (!d.contains(e.target)) { d.classList.remove('open'); var b = d.querySelector('.nav-drop-toggle'); if (b) b.setAttribute('aria-expanded', 'false'); }
-    });
-  });
-
   /* Sticky header state */
   const header = document.querySelector('.site-header');
   const onScroll = () => {
