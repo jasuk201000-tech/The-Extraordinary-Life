@@ -102,6 +102,38 @@
     });
   });
 
+  /* ---- Calendly booking popup on "Save your place" buttons ---- */
+  (function () {
+    var CAL_URL = 'https://calendly.com/jasuk201000/self-belief-session-1?background_color=ffffff&text_color=1e2a27&primary_color=c9a24b&hide_gdpr_banner=1';
+    // Load Calendly's assets once (shared across every page via this script)
+    if (!document.querySelector('link[data-calendly-css]')) {
+      var css = document.createElement('link');
+      css.rel = 'stylesheet';
+      css.href = 'https://assets.calendly.com/assets/external/widget.css';
+      css.setAttribute('data-calendly-css', '');
+      document.head.appendChild(css);
+    }
+    if (!window.Calendly && !document.querySelector('script[data-calendly-js]')) {
+      var s = document.createElement('script');
+      s.src = 'https://assets.calendly.com/assets/external/widget.js';
+      s.async = true;
+      s.setAttribute('data-calendly-js', '');
+      document.head.appendChild(s);
+    }
+    // Any "Save your place" button opens the booking popup; if the widget
+    // hasn't loaded (or is blocked), the button's normal href still works.
+    document.querySelectorAll('a.btn').forEach(function (a) {
+      if (!/save your place/i.test(a.textContent || '')) return;
+      a.setAttribute('data-calendly', '');
+      a.addEventListener('click', function (e) {
+        if (window.Calendly && typeof window.Calendly.initPopupWidget === 'function') {
+          e.preventDefault();
+          window.Calendly.initPopupWidget({ url: CAL_URL });
+        }
+      });
+    });
+  })();
+
   /* Footer year */
   document.querySelectorAll('[data-year]').forEach((el) => { el.textContent = new Date().getFullYear(); });
 })();

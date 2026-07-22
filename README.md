@@ -67,6 +67,15 @@ photography (people, warm light, candid moments) before launch. Forms are
 front-end only; wire `data-demo` / `data-news` submissions to a real backend
 or form service.
 
+### Bookings (Calendly)
+
+"Save your place" buttons open a **Calendly popup**. It's wired once in
+`assets/js/main.js` (the Calendly block): it injects Calendly's widget
+assets, then attaches the popup to every `a.btn` whose label is
+"Save your place", falling back to the button's `href` if the widget is
+blocked. To change the event or theme, edit the single `CAL_URL` constant in
+that block.
+
 ### Preview locally
 
 ```bash
