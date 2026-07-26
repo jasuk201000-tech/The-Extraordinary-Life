@@ -105,7 +105,7 @@
   /* ---- Calendly booking popup on "Save your place" buttons ---- */
   (function () {
     // Profile URL shows the full list of event types and auto-updates as new ones are added.
-    var CAL_URL = 'https://calendly.com/jasuk201000?background_color=ffffff&text_color=1e2a27&primary_color=c9a24b&hide_gdpr_banner=1';
+    var CAL_URL = 'https://calendly.com/freeform-contacts?background_color=ffffff&text_color=1e2a27&primary_color=c9a24b&hide_gdpr_banner=1';
     // Load Calendly's assets once (shared across every page via this script)
     if (!document.querySelector('link[data-calendly-css]')) {
       var css = document.createElement('link');
