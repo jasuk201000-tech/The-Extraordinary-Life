@@ -5,25 +5,45 @@
   /* Progressive enhancement flag — enables collapsible structure via CSS */
   document.documentElement.classList.add('js');
 
-  /* Interactive structure: click a staircase stage / session step to reveal it */
-  var expandables = document.querySelectorAll('.stair, .journey-step');
-  expandables.forEach(function (item) {
-    item.setAttribute('role', 'button');
-    item.setAttribute('tabindex', '0');
-    item.setAttribute('aria-expanded', 'false');
-    var toggle = function () {
+  /* ---------------------------------------------------------------
+     Interactive structure: click a staircase stage / session step.
+     The heading is upgraded into a real <button> controlling the
+     description panel — the correct disclosure pattern. Putting
+     role="button" on the wrapping div (as this used to) flattens the
+     heading and body text into a single button label for screen
+     readers and destroys the document outline.
+     --------------------------------------------------------------- */
+  var uid = 0;
+  document.querySelectorAll('.stair, .journey-step').forEach(function (item) {
+    var heading = item.querySelector('h3');
+    if (!heading) return;
+    var panel = heading.nextElementSibling;
+    if (!panel || panel.tagName !== 'P') return;
+
+    var id = 'disclosure-' + (++uid);
+    panel.id = id;
+
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'disclosure-btn';
+    btn.setAttribute('aria-expanded', 'false');
+    btn.setAttribute('aria-controls', id);
+    while (heading.firstChild) btn.appendChild(heading.firstChild);
+    heading.appendChild(btn);
+
+    btn.addEventListener('click', function () {
       var open = item.classList.toggle('open');
-      item.setAttribute('aria-expanded', String(open));
-    };
-    item.addEventListener('click', toggle);
-    item.addEventListener('keydown', function (e) {
-      if (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') { e.preventDefault(); toggle(); }
+      btn.setAttribute('aria-expanded', String(open));
     });
   });
+
   /* Open the first item of each group so the pattern is discoverable */
   document.querySelectorAll('.stairs, .journey-track').forEach(function (group) {
     var first = group.querySelector('.stair, .journey-step');
-    if (first) { first.classList.add('open'); first.setAttribute('aria-expanded', 'true'); }
+    if (!first) return;
+    first.classList.add('open');
+    var btn = first.querySelector('.disclosure-btn');
+    if (btn) btn.setAttribute('aria-expanded', 'true');
   });
 
   /* Sticky header state */
@@ -35,18 +55,55 @@
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
 
-  /* Mobile menu */
-  const toggle = document.querySelector('.nav-toggle');
+  /* ---------------------------------------------------------------
+     Mobile menu — with focus trap, Escape to close, and focus
+     returned to the toggle on close.
+     --------------------------------------------------------------- */
+  const navToggle = document.querySelector('.nav-toggle');
   const menu = document.querySelector('.mobile-menu');
-  if (toggle && menu) {
+  if (navToggle && menu) {
+    const FOCUSABLE = 'a[href], button:not([disabled]), input, select, textarea, [tabindex]:not([tabindex="-1"])';
+
     const setOpen = (open) => {
-      toggle.classList.toggle('open', open);
+      navToggle.classList.toggle('open', open);
       menu.classList.toggle('open', open);
       document.body.style.overflow = open ? 'hidden' : '';
-      toggle.setAttribute('aria-expanded', String(open));
+      navToggle.setAttribute('aria-expanded', String(open));
+      navToggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+      menu.setAttribute('aria-hidden', String(!open));
+      if (open) {
+        const first = menu.querySelector(FOCUSABLE);
+        if (first) first.focus();
+      } else {
+        navToggle.focus();
+      }
     };
-    toggle.addEventListener('click', () => setOpen(!menu.classList.contains('open')));
+
+    navToggle.setAttribute('aria-controls', 'mobile-menu');
+    menu.id = menu.id || 'mobile-menu';
+    menu.setAttribute('aria-hidden', 'true');
+
+    navToggle.addEventListener('click', () => setOpen(!menu.classList.contains('open')));
     menu.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => setOpen(false)));
+
+    document.addEventListener('keydown', (e) => {
+      if (!menu.classList.contains('open')) return;
+
+      if (e.key === 'Escape') { setOpen(false); return; }
+
+      if (e.key === 'Tab') {
+        const items = Array.from(menu.querySelectorAll(FOCUSABLE))
+          .filter((el) => el.offsetParent !== null);
+        if (!items.length) return;
+        const first = items[0];
+        const last = items[items.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault(); last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault(); first.focus();
+        }
+      }
+    });
   }
 
   /* Scroll reveal */
@@ -80,57 +137,69 @@
     });
   });
 
-  /* Application / contact form (front-end only demo) */
-  document.querySelectorAll('form[data-demo]').forEach((form) => {
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const success = form.parentElement.querySelector('.form-success');
-      if (success) {
-        form.style.display = 'none';
-        success.classList.add('show');
-        success.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }
-    });
-  });
-
-  /* Newsletter (footer) */
-  document.querySelectorAll('form[data-news]').forEach((form) => {
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const input = form.querySelector('input');
-      form.innerHTML = '<p style="font-size:0.9rem;color:var(--sage-deep);font-weight:600;">Thank you — keep an eye on your inbox. 🌱</p>';
-    });
-  });
-
-  /* ---- Calendly booking popup on "Save your place" buttons ---- */
+  /* ---------------------------------------------------------------
+     Calendly booking popup on "Save your place" buttons.
+     Calendly's ~90KB of JS + CSS is fetched on first interaction
+     (click, or hover/focus as a head start) rather than on every page
+     load — nobody pays for the widget unless they intend to book.
+     If the widget is blocked or fails, the button's href still works.
+     --------------------------------------------------------------- */
   (function () {
     // Profile URL shows the full list of event types and auto-updates as new ones are added.
     var CAL_URL = 'https://calendly.com/freeform-contacts?background_color=ffffff&text_color=1e2a27&primary_color=c9a24b&hide_gdpr_banner=1';
-    // Load Calendly's assets once (shared across every page via this script)
-    if (!document.querySelector('link[data-calendly-css]')) {
-      var css = document.createElement('link');
-      css.rel = 'stylesheet';
-      css.href = 'https://assets.calendly.com/assets/external/widget.css';
-      css.setAttribute('data-calendly-css', '');
-      document.head.appendChild(css);
+    var loading = false;
+
+    function loadCalendly(onReady) {
+      if (window.Calendly) { if (onReady) onReady(); return; }
+      if (!document.querySelector('link[data-calendly-css]')) {
+        var css = document.createElement('link');
+        css.rel = 'stylesheet';
+        css.href = 'https://assets.calendly.com/assets/external/widget.css';
+        css.setAttribute('data-calendly-css', '');
+        document.head.appendChild(css);
+      }
+      var existing = document.querySelector('script[data-calendly-js]');
+      if (!existing) {
+        var s = document.createElement('script');
+        s.src = 'https://assets.calendly.com/assets/external/widget.js';
+        s.async = true;
+        s.setAttribute('data-calendly-js', '');
+        if (onReady) s.addEventListener('load', onReady);
+        document.head.appendChild(s);
+        loading = true;
+      } else if (onReady) {
+        existing.addEventListener('load', onReady);
+      }
     }
-    if (!window.Calendly && !document.querySelector('script[data-calendly-js]')) {
-      var s = document.createElement('script');
-      s.src = 'https://assets.calendly.com/assets/external/widget.js';
-      s.async = true;
-      s.setAttribute('data-calendly-js', '');
-      document.head.appendChild(s);
-    }
-    // Any "Save your place" button opens the booking popup; if the widget
-    // hasn't loaded (or is blocked), the button's normal href still works.
-    document.querySelectorAll('a.btn').forEach(function (a) {
-      if (!/save your place/i.test(a.textContent || '')) return;
+
+    var triggers = Array.prototype.filter.call(
+      document.querySelectorAll('a.btn'),
+      function (a) { return /save your place/i.test(a.textContent || ''); }
+    );
+
+    triggers.forEach(function (a) {
       a.setAttribute('data-calendly', '');
+      // Warm the connection when intent is likely, so the click feels instant.
+      ['pointerenter', 'focus'].forEach(function (evt) {
+        a.addEventListener(evt, function () { if (!loading) loadCalendly(); }, { once: true });
+      });
       a.addEventListener('click', function (e) {
         if (window.Calendly && typeof window.Calendly.initPopupWidget === 'function') {
           e.preventDefault();
           window.Calendly.initPopupWidget({ url: CAL_URL });
+          return;
         }
+        // Not loaded yet — fetch it, then open as soon as it lands.
+        e.preventDefault();
+        a.setAttribute('aria-busy', 'true');
+        loadCalendly(function () {
+          a.removeAttribute('aria-busy');
+          if (window.Calendly && typeof window.Calendly.initPopupWidget === 'function') {
+            window.Calendly.initPopupWidget({ url: CAL_URL });
+          } else {
+            window.location.href = a.href; // widget blocked — fall back
+          }
+        });
       });
     });
   })();

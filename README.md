@@ -1,83 +1,100 @@
 # The Extra Ordinary Life
 
-A premium marketing website for a psychology & self-development seminar
-organisation aimed at 16–25 year olds. Designed to feel emotionally
-intelligent, warm, modern and trustworthy — never salesy.
+Marketing website for a psychology & self-development seminar organisation for
+**13–25 year olds in Canberra, ACT**. Designed to feel emotionally intelligent,
+warm, modern and trustworthy — never salesy.
 
 The site is organised around the brand's **Four-Stage Staircase** framework
 (Self-Belief → Perspective → Connection → Meaning), with the paper-plane
-wordmark logo, Before/After testimonials, and pull-quote banner interludes.
+wordmark logo, participant stories, and pull-quote banner interludes.
+
+**Live:** <https://theextraordinary.life> · hosted on GitHub Pages from `main`.
 
 ## Run it
 
-It's a static site — no build step. Just open `index.html` in a browser, or
-serve the folder:
+Static site, no build step. Open `index.html`, or serve the folder:
 
 ```bash
-python -m http.server 8000   # then visit http://localhost:8000
+node .claude/static-server.js   # http://localhost:4321 (auto-picks a free port)
 ```
 
 ## Pages
 
 | File | Purpose |
 | --- | --- |
-| `index.html` | Home — trust, the interactive Four-Stage Staircase, session arc, stories, FAQ teaser |
-| `the-experience.html` | Step-by-step walkthrough of the sessions + what we'll never do |
-| `the-programme.html` | Philosophy, the interactive framework, principles, and a promise to parents (`#parents`) |
-| `the-team.html` | The people/organisation — placeholder photos, names, roles and bios to fill in |
-| `stories.html` | Testimonials and Before/After outcomes |
-| `faq.html` | Full FAQ accordion (its own page) |
-| `apply.html` | Dates, a gentle no-pressure application form, and contact |
+| `index.html` | Home — trust, the interactive Four-Stage Staircase, session arc, stories |
+| `the-experience.html` | Step-by-step walkthrough of a session + what we'll never do |
+| `the-programme.html` | Philosophy, the framework, principles, promise to parents (`#parents`) |
+| `stories.html` | Participant testimonials, in their own words |
+| `apply.html` | Booking (Calendly) and contact details |
+| `privacy.html` | Privacy policy — Australian Privacy Principles |
+| `safeguarding.html` | Safeguarding commitments and how to raise a concern |
+| `404.html` | Not-found page (GitHub Pages serves this automatically) |
 
-The sessions are **free**. The Four-Stage Staircase and the session arc are
-**click-to-expand** (progressive enhancement — full text shows if JS is off).
+Sessions are **$30**. The Four-Stage Staircase and the session arc are
+click-to-expand (progressive enhancement — full text shows if JS is off).
 
 ## Structure
 
 ```
 assets/
   css/styles.css   Design system (tokens, components, responsive)
-  js/main.js       Sticky header, mobile menu, scroll reveals, FAQ, forms
-  img/*.svg        Lightweight illustrations & portraits (placeholders)
+  js/main.js       Header, mobile menu, scroll reveals, disclosures, Calendly
+  img/*.webp       Photography (WebP, with .jpeg fallbacks via <picture>)
+  img/*.svg        Lightweight illustration placeholders
+CNAME              Custom domain for GitHub Pages
+robots.txt         Points crawlers at the sitemap
+sitemap.xml        All indexable URLs
 ```
 
-## Design notes (v2 — minimalist, banner-led)
+## Bookings (Calendly)
 
-Rebuilt applying two design skills:
-[anthropics/frontend-design](https://github.com/anthropics/skills/tree/main/skills/frontend-design)
-and [nextlevelbuilder/ui-ux-pro-max-skill](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill),
-styled after the clean, minimalist look of [unyouth.org.au](https://unyouth.org.au/).
+There are **no forms on this site**. Every "Save your place" button opens a
+Calendly popup, wired once in `assets/js/main.js`. Calendly's assets are loaded
+**on first interaction** (hover/focus warms the connection, click opens the
+popup) so visitors who never book never pay the download cost. If the widget is
+blocked, the button falls back to its `href`.
 
-- **Palette (kept)** — warm ivory surfaces, deep teal grounding, coral & peach
-  accents. Applied *minimally*: mostly white space, colour reserved for the
-  banner bands and a single coral accent.
-- **Type** — **Sora** (bold geometric display) + **Inter** (body). This is a
-  close match for the UN Youth character; swap both `@import` families in
-  `styles.css` for the brand's exact licensed fonts if you have them.
-- **Banner bands** — the signature UN Youth component: full-bleed colour blocks
-  (`.band` + `.band--coral/teal/sage/ink/cream/peach`) with a bold heading,
-  one short line, and a single CTA. See the empathy, pricing and final-CTA
-  sections on the home page.
-- **Skill rules baked in** — SVG icons only (no emoji as icons), one primary
-  CTA per band, 4.5:1 contrast, visible `:focus-visible` rings, ≥44–48px touch
-  targets, `prefers-reduced-motion` respected, labelled form fields.
+To change the event or theme, edit the single `CAL_URL` constant in that block.
 
-The illustrations and portraits are SVG placeholders — swap them for real
-photography (people, warm light, candid moments) before launch. Forms are
-front-end only; wire `data-demo` / `data-news` submissions to a real backend
-or form service.
+## SEO & local search
 
-### Bookings (Calendly)
+- Per-page `<title>`, meta description, canonical, Open Graph and Twitter cards
+- JSON-LD: `LocalBusiness` + `EducationalOrganization`, `WebSite`, `Course`,
+  and `BreadcrumbList`, all scoped to Canberra / ACT
+- `robots.txt` + `sitemap.xml`, `lang="en-AU"`, `geo.*` meta tags
 
-"Save your place" buttons open a **Calendly popup**. It's wired once in
-`assets/js/main.js` (the Calendly block): it injects Calendly's widget
-assets, then attaches the popup to every `a.btn` whose label is
-"Save your place", falling back to the button's `href` if the widget is
-blocked. To change the event or theme, edit the single `CAL_URL` constant in
-that block.
+**Still to do by hand:** claim the Google Business Profile for Canberra, and
+add real social URLs (the placeholder icons were removed rather than left
+pointing at `#`).
 
-### Preview locally
+## Accessibility
 
-```bash
-node .claude/static-server.js   # serves the folder on http://localhost:4321
-```
+Targets WCAG 2.1 AA: skip link, `<main>` landmark, visible focus rings, 44px
+touch targets, AA contrast throughout, `prefers-reduced-motion` respected, and
+the expand/collapse blocks use real `<button>` elements with
+`aria-expanded`/`aria-controls`. The mobile menu traps focus and closes on
+<kbd>Esc</kbd>.
+
+## Design notes
+
+Minimalist and banner-led, styled after the clean look of
+[unyouth.org.au](https://unyouth.org.au/).
+
+- **Palette** — warm ivory surfaces, deep teal grounding, gold accents. Applied
+  minimally: mostly white space, colour reserved for banner bands and a single
+  gold accent.
+- **Type** — **Sora** (display) + **Inter** (body), loaded via `<link>` in each
+  page's `<head>`. Do not move these back into a CSS `@import` — that serialises
+  the request behind the stylesheet and blocks first paint.
+- **Banner bands** — full-bleed colour blocks (`.band` + `.band--coral/teal/…`)
+  with a bold heading, one short line, and a single CTA.
+
+## Known gaps
+
+- Contact email is `hello@extraordinarylife.org` but the site is
+  `theextraordinary.life` — worth aligning.
+- `privacy.html` and `safeguarding.html` contain `[confirm]` markers for details
+  only the organisation can supply (ABN, WWVP registration, retention periods).
+- Header/nav/footer markup is duplicated across every page. A small static-site
+  generator would remove a whole class of merge conflict.
