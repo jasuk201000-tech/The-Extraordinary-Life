@@ -3,5 +3,12 @@
 Thumbs.db
 *.log
 
+# Visual Studio (cache/build — never commit these; they cause file-lock errors)
+.vs/
+bin/
+obj/
+*.user
+*.suo
+
 # Dependencies (none currently, but just in case)
 node_modules/
