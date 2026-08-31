@@ -1,4 +1,4 @@
-# The Extra Ordinary Life
+# The Extraordinary Life
 
 Marketing website for a psychology & self-development seminar organisation for
 **13–25 year olds in Canberra, ACT**. Designed to feel emotionally intelligent,
