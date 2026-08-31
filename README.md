@@ -31,7 +31,7 @@ node .claude/static-server.js   # http://localhost:4321 (auto-picks a free port)
 | `safeguarding.html` | Safeguarding commitments and how to raise a concern |
 | `404.html` | Not-found page (GitHub Pages serves this automatically) |
 
-Sessions are **$30**. The Four-Stage Staircase and the session arc are
+Sessions are **free**. The Four-Stage Staircase and the session arc are
 click-to-expand (progressive enhancement — full text shows if JS is off).
 
 ## Structure
