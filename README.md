@@ -1,7 +1,7 @@
-# The Extraordinary Life
+# The Extra Ordinary Life
 
 Marketing website for a psychology & self-development seminar organisation for
-**13–25 year olds in Canberra, ACT**. Designed to feel emotionally intelligent,
+**16–22 year olds in Canberra, ACT**. Designed to feel emotionally intelligent,
 warm, modern and trustworthy — never salesy.
 
 The site is organised around the brand's **Four-Stage Staircase** framework

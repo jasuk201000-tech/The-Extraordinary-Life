@@ -204,6 +204,89 @@
     });
   })();
 
+  /* ---------------------------------------------------------------
+     Gallery lightbox (Real Moments page only).
+     Opens the full-size photo in a modal: Escape and the close button
+     dismiss it, arrow keys move between photos, focus is trapped while
+     open and returned to the thumbnail that opened it.
+     --------------------------------------------------------------- */
+  (function () {
+    const grid = document.querySelector('.gallery-masonry');
+    const box = document.querySelector('.lightbox');
+    if (!grid || !box) return;
+
+    const figures = Array.from(grid.querySelectorAll('figure'));
+    const stage = box.querySelector('.lightbox-stage');
+    const capEl = box.querySelector('.lightbox-cap');
+    const countEl = box.querySelector('.lightbox-count');
+    const btnClose = box.querySelector('[data-close]');
+    const btnPrev = box.querySelector('[data-prev]');
+    const btnNext = box.querySelector('[data-next]');
+
+    let index = 0;
+    let opener = null;
+
+    function render(i) {
+      index = (i + figures.length) % figures.length;
+      const fig = figures[index];
+      const img = fig.querySelector('img');
+      const src = img.getAttribute('data-full') || img.currentSrc || img.src;
+      const cap = fig.querySelector('figcaption');
+
+      stage.innerHTML = '';
+      const full = document.createElement('img');
+      full.src = src;
+      full.alt = img.alt;
+      stage.appendChild(full);
+
+      capEl.textContent = cap ? cap.textContent.trim() : '';
+      countEl.textContent = (index + 1) + ' / ' + figures.length;
+    }
+
+    function open(i, trigger) {
+      opener = trigger || null;
+      render(i);
+      box.classList.add('open');
+      box.setAttribute('aria-hidden', 'false');
+      document.body.classList.add('lightbox-open');
+      btnClose.focus();
+    }
+
+    function close() {
+      box.classList.remove('open');
+      box.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('lightbox-open');
+      stage.innerHTML = '';
+      if (opener) opener.focus();
+    }
+
+    figures.forEach((fig, i) => {
+      const btn = fig.querySelector('.gal-open');
+      if (btn) btn.addEventListener('click', () => open(i, btn));
+    });
+
+    btnClose.addEventListener('click', close);
+    btnPrev.addEventListener('click', () => render(index - 1));
+    btnNext.addEventListener('click', () => render(index + 1));
+
+    // Clicking the backdrop (but not the photo or controls) closes.
+    box.addEventListener('click', (e) => { if (e.target === box || e.target === stage) close(); });
+
+    document.addEventListener('keydown', (e) => {
+      if (!box.classList.contains('open')) return;
+      if (e.key === 'Escape') { close(); return; }
+      if (e.key === 'ArrowLeft') { e.preventDefault(); render(index - 1); return; }
+      if (e.key === 'ArrowRight') { e.preventDefault(); render(index + 1); return; }
+      if (e.key === 'Tab') {
+        const items = Array.from(box.querySelectorAll('button')).filter((el) => el.offsetParent !== null);
+        if (!items.length) return;
+        const first = items[0], last = items[items.length - 1];
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      }
+    });
+  })();
+
   /* Footer year */
   document.querySelectorAll('[data-year]').forEach((el) => { el.textContent = new Date().getFullYear(); });
 })();
