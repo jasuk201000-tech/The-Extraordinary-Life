@@ -1,4 +1,4 @@
-/* Extraordinary Life — interactions */
+/* Extra Ordinary Life — interactions */
 (function () {
   'use strict';
 
